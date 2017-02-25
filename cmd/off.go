@@ -28,17 +28,17 @@ import (
 	"github.com/kragniz/proxy/pkg"
 )
 
-// onCmd represents the on command
-var onCmd = &cobra.Command{
-	Use:   "on",
-	Short: "Turn proxy on",
-	Long:  `Turn the default proxy on, setting http_proxy etc.`,
+// offCmd represents the off command
+var offCmd = &cobra.Command{
+	Use:   "off",
+	Short: "Turn proxy off",
+	Long:  `Turn proxy off.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("on called")
-		proxy.On("http://proxy.bigcorp.com")
+		fmt.Println("off called")
+		proxy.Off()
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(onCmd)
+	RootCmd.AddCommand(offCmd)
 }
