@@ -20,7 +20,7 @@
 
 package main
 
-import "github.com/proxy/cmd"
+import "github.com/kragniz/proxy/cmd"
 
 func main() {
 	cmd.Execute()

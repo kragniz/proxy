@@ -18,41 +18,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package proxy
+package cmd
 
 import (
 	"fmt"
 	"os"
-	"syscall"
+
+	"github.com/spf13/cobra"
+
+	"github.com/kragniz/proxy/pkg"
 )
 
-var ProxyEnvs = []string{
-	"http_proxy",
-	"https_proxy",
-	"HTTP_PROXY",
-	"HTTPS_PROXY",
+// showCmd represents the show command
+var showCmd = &cobra.Command{
+	Use:   "show",
+	Short: "Show the current proxy configuration",
+	Long:  `Show the current proxy configuration.`,
+	Run: func(cmd *cobra.Command, args []string) {
+		for _, env := range proxy.ProxyEnvs {
+			fmt.Println(env, "	=", os.Getenv(env))
+		}
+
+		noProxy := []string{"no_proxy", "NO_PROXY"}
+		for _, env := range noProxy {
+			fmt.Println(env, "	=", os.Getenv(env))
+		}
+	},
 }
 
-func replaceShell() {
-	shell := os.Getenv("SHELL")
-
-	syscall.Exec(shell, []string{shell}, syscall.Environ())
-}
-
-func On(proxy string) {
-	fmt.Println("proxy on")
-
-	for _, env := range ProxyEnvs {
-		fmt.Println("proxy on", env, "=", proxy)
-		os.Setenv(env, proxy)
-	}
-	replaceShell()
-}
-
-func Off() {
-	for _, env := range ProxyEnvs {
-		fmt.Println("proxy off", env)
-		os.Unsetenv(env)
-	}
-	replaceShell()
+func init() {
+	RootCmd.AddCommand(showCmd)
 }
