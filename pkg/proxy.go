@@ -22,6 +22,7 @@ package proxy
 
 import (
 	"os"
+	"strings"
 	"syscall"
 )
 
@@ -30,6 +31,11 @@ var ProxyEnvs = []string{
 	"https_proxy",
 	"HTTP_PROXY",
 	"HTTPS_PROXY",
+}
+
+var NoProxy = []string{
+	"no_proxy",
+	"NO_PROXY",
 }
 
 func replaceShell() {
@@ -48,6 +54,23 @@ func On(proxy string) {
 func Off() {
 	for _, env := range ProxyEnvs {
 		os.Unsetenv(env)
+	}
+	replaceShell()
+}
+
+func ignore(noProxy string, host string) string {
+	hosts := os.Getenv(noProxy)
+	if len(hosts) > 0 {
+		return strings.Join([]string{hosts, host}, ",")
+	} else {
+		return host
+	}
+}
+
+func Ignore(host string) {
+	for _, env := range NoProxy {
+		newEnv := ignore(env, host)
+		os.Setenv(env, newEnv)
 	}
 	replaceShell()
 }

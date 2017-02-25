@@ -29,22 +29,20 @@ import (
 	"github.com/kragniz/proxy/pkg"
 )
 
-// showCmd represents the show command
-var showCmd = &cobra.Command{
-	Use:   "show",
-	Short: "Show the current proxy configuration",
-	Long:  `Show the current proxy configuration.`,
+// ignoreCmd represents the ignore command
+var ignoreCmd = &cobra.Command{
+	Use:   "ignore",
+	Short: "Disable the proxy for a host",
+	Long:  `Disable the proxy for a host.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		for _, env := range proxy.ProxyEnvs {
-			fmt.Println(env, "	=", os.Getenv(env))
+		if len(args) != 1 {
+			fmt.Println("Error: ignore needs a host to ignore")
+			os.Exit(1)
 		}
-
-		for _, env := range proxy.NoProxy {
-			fmt.Println(env, "	=", os.Getenv(env))
-		}
+		proxy.Ignore(args[0])
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(showCmd)
+	RootCmd.AddCommand(ignoreCmd)
 }
