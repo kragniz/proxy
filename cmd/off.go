@@ -21,8 +21,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 
 	"github.com/kragniz/proxy/pkg"
@@ -34,7 +32,6 @@ var offCmd = &cobra.Command{
 	Short: "Turn proxy off",
 	Long:  `Turn proxy off.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("off called")
 		proxy.Off()
 	},
 }

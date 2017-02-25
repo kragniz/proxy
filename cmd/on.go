@@ -21,9 +21,8 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/kragniz/proxy/pkg"
 )
@@ -34,8 +33,8 @@ var onCmd = &cobra.Command{
 	Short: "Turn proxy on",
 	Long:  `Turn the default proxy on, setting http_proxy etc.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("on called")
-		proxy.On("http://proxy.bigcorp.com")
+		server := viper.GetString("ProxyServer")
+		proxy.On(server)
 	},
 }
 

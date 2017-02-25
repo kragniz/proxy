@@ -21,7 +21,6 @@
 package proxy
 
 import (
-	"fmt"
 	"os"
 	"syscall"
 )
@@ -40,10 +39,7 @@ func replaceShell() {
 }
 
 func On(proxy string) {
-	fmt.Println("proxy on")
-
 	for _, env := range ProxyEnvs {
-		fmt.Println("proxy on", env, "=", proxy)
 		os.Setenv(env, proxy)
 	}
 	replaceShell()
@@ -51,7 +47,6 @@ func On(proxy string) {
 
 func Off() {
 	for _, env := range ProxyEnvs {
-		fmt.Println("proxy off", env)
 		os.Unsetenv(env)
 	}
 	replaceShell()
